@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="1.4.0" />
+    <PackageReference Include="EPPlus" Version="8.4.0" />
   </ItemGroup>
 
 </Project>
