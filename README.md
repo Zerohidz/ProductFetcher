@@ -13,18 +13,31 @@ Modern C# ile yazılmış Trendyol ürün çekme ve Excel export aracı. Python 
 
 ## 🚀 Hızlı Başlangıç
 
-### Gereksinimler
+### 1. Hazırlık: Excel Şablonları (Opsiyonel)
 
-- .NET 9.0 SDK
+Uygulama, `excel_templates` klasörü altındaki şablonları kontrol eder.
+- Şablonları bu klasöre koyun: `ProductFetcher/excel_templates/`
+- Dosya adı kategori adıyla aynı olmalıdır (örn: `Telefon Tutucu.xlsx`)
+- Şablon bulunamazsa standart format kullanılır.
 
-### Çalıştırma
+### 2. Çalıştırma
 
 ```bash
 cd ProductFetcher
 dotnet run
 ```
 
-Program sizden mağaza ID'si isteyecektir.
+### 3. Kullanım
+
+Program çalıştığında sizden **Mağaza ID** isteyecektir.
+- Mağaza ID'sini girip Enter'a basın (örn: `123456`)
+- Program ürünleri çekecek, detaylandıracak ve Excel'e dönüştürecektir.
+
+### 4. Çıktılar
+
+Oluşturulan dosyalar `outputs` klasöründe mağaza adına göre gruplanır:
+- Yol: `ProductFetcher/outputs/MağazaAdı_MağazaID/`
+- Her kategori için ayrı bir `.xlsx` dosyası oluşturulur.
 
 ## 📦 Build
 
