@@ -39,7 +39,7 @@ public class ExcelExporterService
     {
         if (products.Count == 0)
         {
-            Console.WriteLine("Excel oluşturmak için ürün bulunamadı.");
+            Console.WriteLine("⚠️ Excel oluşturmak için ürün bulunamadı.");
             return;
         }
 
@@ -48,7 +48,7 @@ public class ExcelExporterService
         var outputDirName = $"outputs/{merchantName}_{merchantId}";
 
         FileHelper.SetupClearDirectory(outputDirName);
-        Console.WriteLine($"Excel dosyaları '{outputDirName}' klasörüne kaydedilecek.");
+        Console.WriteLine($"📂 Excel dosyaları '{outputDirName}' klasörüne kaydedilecek.");
 
         // Group products by category
         var categories = products.GroupBy(p => p.CategoryName).ToDictionary(g => g.Key, g => g.ToList());
@@ -85,7 +85,7 @@ public class ExcelExporterService
 
             if (productsDataForExcel.Count == 0)
             {
-                Console.WriteLine($"'{categoryName}' kategorisi için yazılacak veri bulunamadı.");
+                Console.WriteLine($"⚠️ '{categoryName}' kategorisi için yazılacak veri bulunamadı.");
                 continue;
             }
 
@@ -167,17 +167,17 @@ public class ExcelExporterService
                     headers.Add(headerValue);
                 }
 
-                Console.WriteLine($"Kategori '{categoryName}' için şablon bulundu: {templatePath}");
+                Console.WriteLine($"📄 Kategori '{categoryName}' için şablon bulundu: {templatePath}");
                 return (headers, true, ".xlsx", templatePath);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"'{categoryName}' için şablon okunamadı ({templatePath}): {ex.Message}. Şablonsuz devam edilecek.");
+                Console.WriteLine($"⚠️ '{categoryName}' için şablon okunamadı ({templatePath}): {ex.Message}. Şablonsuz devam edilecek.");
             }
         }
         else
         {
-            Console.WriteLine($"Kategori '{categoryName}' için şablon bulunamadı: {templatePath}. Şablonsuz format kullanılacak.");
+            Console.WriteLine($"ℹ️ Kategori '{categoryName}' için şablon bulunamadı: {templatePath}. Şablonsuz format kullanılacak.");
         }
 
         return (CommonHeadersBase.ToList(), false, NonTemplatedSuffix, null);
@@ -342,11 +342,11 @@ public class ExcelExporterService
             }
 
             var statusMsg = isTemplated ? "şablonlu" : "şablonsuz";
-            Console.WriteLine($"'{categoryName}' kategorisi için {statusMsg} Excel dosyası oluşturuldu ({productCount} ürün): {filePath}");
+            Console.WriteLine($"✅ '{categoryName}' kategorisi için {statusMsg} Excel dosyası oluşturuldu ({productCount} ürün): {filePath}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"'{categoryName}' kategorisi için Excel ({filePath}) yazılırken hata oluştu: {ex.Message}");
+            Console.WriteLine($"❌ '{categoryName}' kategorisi için Excel ({filePath}) yazılırken hata oluştu: {ex.Message}");
         }
     }
 }
