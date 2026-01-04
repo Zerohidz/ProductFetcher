@@ -1,38 +1,120 @@
-# Product Fetcher (C# Edition)
+# Product Fetcher - C# Edition
 
-Basit, production-ready C# implementation. Tek proje, Native AOT support.
+Modern C# ile yazılmış Trendyol ürün çekme ve Excel export aracı. Python versiyonundan refactor edilmiştir.
 
-## 🚀 Features
+## ✨ Özellikler
 
-- **Native AOT**: Single .exe, no .NET runtime needed
-- **Simple**: Tek proje, clean code
-- **Fast**: Async/await, connection pooling
-- **Resilient**: Polly retry policies
+- ✅ Pagination ve price range stratejisi ile tüm ürünleri çekme
+- ✅ Ürün detayları ve açıklamaları otomatik toplama
+- ✅ Kategorilere göre Excel export (şablonlu/şablonsuz)
+- ✅ Async/await ile performanslı işlem
+- ✅ Native AOT desteği (tek executable)
+- ✅ Error handling ve failed products logging
 
-## 📋 Requirements
+## 🚀 Hızlı Başlangıç
+
+### Gereksinimler
 
 - .NET 9.0 SDK
 
-## 🔨 Build
+### Çalıştırma
 
 ```bash
 cd ProductFetcher
+dotnet run
+```
+
+Program sizden mağaza ID'si isteyecektir.
+
+## 📦 Build
+
+### Debug Build
+```bash
 dotnet build
 ```
 
-### Native AOT
+### Release Build  
 ```bash
-dotnet publish -c Release -r linux-x64 --self-contained -p:PublishAot=true -o ./dist
+dotnet build -c Release
 ```
 
-## 🎯 Usage
-
+### Native AOT Publish (Tek Executable)
 ```bash
-dotnet run
-# Mağaza ID: [enter merchant id]
+dotnet publish -c Release -r linux-x64 --self-contained -p:PublishAot=true
 ```
 
-## 📖 Docs
+Çıktı: `bin/Release/net9.0/linux-x64/publish/ProductFetcher.Console`
 
-- [Python Kod Analizi](DOCS/PYTHON_CODE_ANALYSIS_REPORT.md)
-- [C# Roadmap](DOCS/CSHARP_REFACTOR_ROADMAP.md)
+## 📁 Proje Yapısı
+
+```
+ProductFetcher/
+├── Models/                 # Data models
+│   ├── Product.cs
+│   ├── Brand.cs
+│   ├── PriceDetails.cs
+│   └── ProductDetails.cs
+├── Services/              # Business logic
+│   ├── ProductFetcherService.cs
+│   ├── ProductDetailsService.cs
+│   └── ExcelExporterService.cs
+├── Utils/                 # Utilities
+│   ├── HttpClientHelper.cs
+│   ├── HtmlParser.cs
+│   ├── TextUtils.cs
+│   └── FileHelper.cs
+├── Program.cs            # Entry point
+└── appsettings.json      # Configuration
+```
+
+## 🔧 Kullanılan Teknolojiler
+
+| Amaç | Kütüphane | Neden |
+|------|-----------|-------|
+| HTTP | HttpClient | Built-in, AOT-friendly |
+| Resilience | Polly | Retry, circuit breaker |
+| HTML Parse | AngleSharp | Fast, modern |
+| Excel | EPPlus | Feature-rich |
+| JSON | System.Text.Json | AOT-friendly, fast |
+| Config | Microsoft.Extensions.Configuration | Standard |
+
+## 📊 Çıktılar
+
+- `outputs/{MerchantName}_{MerchantId}/` - Excel dosyaları (kategori bazlı)
+- `testing/products.json` - Ham ürün verileri 
+- `testing/product_details.json` - Detaylı ürün verileri
+- `testing/failed_products.json` - Başarısız ürünler (varsa)
+
+## 🎯 Refactor Detayları
+
+Python → C# refactor roadmap'i için `DOCS/CSHARP_REFACTOR_ROADMAP.md` dosyasına bakın.
+
+### Temel Değişiklikler
+
+- `merchant_product_fetcher.py` → `ProductFetcherService.cs`
+- `product_details_fetcher.py` → `ProductDetailsService.cs` + `HtmlParser.cs`
+- `excel_utils.py` → `ExcelExporterService.cs`
+- `header_utils.py` → `HttpClientHelper.cs`
+- `models.py` → `Models/*.cs` (record types ile)
+
+## 📝 Commit Geçmişi
+
+1. ✅ Models - Python models.py to C#
+2. ✅ HTTP Helper + User Agents
+3. ✅ Product Fetcher - Pagination logic
+4. ✅ HTML Parser + JSON Extraction
+5. ✅ Product Details Service
+6-7. ✅ Excel Exporter (template support)
+8. ✅ Main Program orchestration  
+9. ✅ Configuration + Polly
+10. ✅ Native AOT Setup
+
+## ⚡ Performance
+
+- Startup: ~0.5s (AOT)
+- Memory: Efficient connection pooling
+- Binary size: ~15-50MB (AOT)
+
+## 📜 License
+
+Bu proje sadece eğitim amaçlıdır.
