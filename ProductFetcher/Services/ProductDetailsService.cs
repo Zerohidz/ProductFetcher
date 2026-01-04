@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ProductFetcher.Models;
+using ProductFetcher.Serialization;
 using ProductFetcher.Utils;
 
 namespace ProductFetcher.Services;
@@ -27,7 +28,7 @@ public class ProductDetailsService
         // Extract JSON from HTML
         var productJsonText = HtmlParser.ExtractProductJsonFromHtml(html, url);
         // The extracted JSON is the product object itself, not wrapped in a "product" key
-        var product = JsonSerializer.Deserialize<HtmlParser.ProductDetailsParser.ProductJson>(productJsonText);
+        var product = JsonSerializer.Deserialize(productJsonText, AppJsonSerializerContext.Default.ParserProductJson);
 
         if (product == null)
         {
@@ -89,7 +90,7 @@ public class ProductDetailsService
         var response = await HttpClientHelper.GetWithRandomUserAgentAsync(url, cancellationToken: cancellationToken);
         response.EnsureSuccessStatusCode();
 
-        var data = await response.Content.ReadFromJsonAsync<HtmlContentApiResponse>(cancellationToken);
+        var data = await response.Content.ReadFromJsonAsync(AppJsonSerializerContext.Default.HtmlContentApiResponse, cancellationToken);
 
         if (data == null || !data.IsSuccess || data.StatusCode != 200)
         {
@@ -167,7 +168,7 @@ public class ProductDetailsService
     /// <summary>
     /// API response structure for HTML content endpoint
     /// </summary>
-    private class HtmlContentApiResponse
+    internal class HtmlContentApiResponse
     {
         [JsonPropertyName("isSuccess")]
         public bool IsSuccess { get; set; }
@@ -182,7 +183,7 @@ public class ProductDetailsService
         public HtmlContentResult? Result { get; set; }
     }
 
-    private class HtmlContentResult
+    internal class HtmlContentResult
     {
         [JsonPropertyName("content")]
         public string? Content { get; set; }

@@ -86,14 +86,4 @@ public static class HttpClientHelper
         return await SharedClient.SendAsync(request, cancellationToken);
     }
 
-    /// <summary>
-    /// Performs a GET request and deserializes the JSON response
-    /// </summary>
-    public static async Task<T?> GetJsonAsync<T>(string url, Dictionary<string, string>? queryParams = null, CancellationToken cancellationToken = default)
-    {
-        var response = await GetWithRandomUserAgentAsync(url, queryParams, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        
-        return await response.Content.ReadFromJsonAsync<T>(cancellationToken);
-    }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using ProductFetcher.Models;
+using ProductFetcher.Serialization;
 using ProductFetcher.Services;
 using ProductFetcher.Utils;
 
@@ -125,11 +126,7 @@ public class Program
             var failedProductsPath = Path.Combine(TestingDir, "failed_products.json");
             await File.WriteAllTextAsync(
                 failedProductsPath,
-                JsonSerializer.Serialize(failedProducts, new JsonSerializerOptions
-                {
-                    WriteIndented = true,
-                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                }));
+                JsonSerializer.Serialize(failedProducts, AppJsonSerializerContext.Default.ListFailedProduct));
 
             Console.WriteLine($"\n⚠️  {failedProducts.Count} ürün işlenemedi. Detaylar: {failedProductsPath}");
         }
@@ -140,11 +137,7 @@ public class Program
     /// </summary>
     private static async Task SaveProductsJsonAsync(List<Product> products, string filePath)
     {
-        var json = JsonSerializer.Serialize(products, new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        });
+        var json = JsonSerializer.Serialize(products, AppJsonSerializerContext.Default.ListProduct);
 
         await File.WriteAllTextAsync(filePath, json);
     }
@@ -152,7 +145,7 @@ public class Program
     /// <summary>
     /// Failed product information for error logging
     /// </summary>
-    private class FailedProduct
+    internal class FailedProduct
     {
         public required int ProductId { get; init; }
         public required string ProductName { get; init; }

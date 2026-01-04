@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ProductFetcher.Models;
+using ProductFetcher.Serialization;
 using ProductFetcher.Utils;
 
 namespace ProductFetcher.Services;
@@ -17,13 +18,13 @@ public class ProductFetcherService
     /// <summary>
     /// API response structure
     /// </summary>
-    private class ApiResponse
+    internal class ApiResponse
     {
         [JsonPropertyName("result")]
         public required ApiResult Result { get; init; }
     }
     
-    private class ApiResult
+    internal class ApiResult
     {
         [JsonPropertyName("products")]
         public required List<ProductJson> Products { get; init; }
@@ -32,7 +33,7 @@ public class ProductFetcherService
     /// <summary>
     /// Raw product JSON from API (uses camelCase)
     /// </summary>
-    private class ProductJson
+    internal class ProductJson
     {
         [JsonPropertyName("id")]
         public required int Id { get; init; }
@@ -65,7 +66,7 @@ public class ProductFetcherService
         public required decimal Tax { get; init; }
     }
     
-    private class BrandJson
+    internal class BrandJson
     {
         [JsonPropertyName("id")]
         public required int Id { get; init; }
@@ -74,7 +75,7 @@ public class ProductFetcherService
         public required string Name { get; init; }
     }
     
-    private class PriceJson
+    internal class PriceJson
     {
         [JsonPropertyName("discountedPrice")]
         public required decimal DiscountedPrice { get; init; }
@@ -175,7 +176,7 @@ public class ProductFetcherService
                     response.EnsureSuccessStatusCode();
                 }
 
-                var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse>(cancellationToken);
+                var apiResponse = await response.Content.ReadFromJsonAsync(AppJsonSerializerContext.Default.ApiResponse, cancellationToken);
                 var pageProducts = apiResponse?.Result?.Products ?? [];
 
                 if (pageProducts.Count == 0)
