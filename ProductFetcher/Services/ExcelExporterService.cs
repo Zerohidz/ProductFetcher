@@ -26,8 +26,11 @@ public class ExcelExporterService
         "Sevkiyat Süresi", "Sevkiyat Tipi"
     ];
 
-    // Note: EPPlus 8+ requires a license file or commercial license
-    // For non-commercial use, no runtime configuration needed
+    static ExcelExporterService()
+    {
+        // For EPPlus 8+, we must use the License property and explicit method for non-commercial use
+        ExcelPackage.License.SetNonCommercialPersonal("Zerohidz");
+    }
 
     /// <summary>
     /// Creates Excel files for merchant's products, organized by category
