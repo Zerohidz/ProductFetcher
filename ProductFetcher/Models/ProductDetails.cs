@@ -1,19 +1,20 @@
+using System.Text.Json.Serialization;
+
 namespace ProductFetcher.Models;
 
 /// <summary>
-/// Product attribute (key-value pair)
-/// </summary>
-public record ProductAttribute
-{
-    public required string Key { get; init; }
-    public required string Value { get; init; }
-}
-
-/// <summary>
 /// Detailed product information
+/// Example: { "attributes": [{"key": "Color", "value": "Red"}], "description": "..." }
 /// </summary>
 public record ProductDetails
 {
-    public required List<ProductAttribute> Attributes { get; init; }
+    /// <summary>
+    /// Product attributes as key-value pairs
+    /// Python: list[dict[str, str]]
+    /// </summary>
+    [JsonPropertyName("attributes")]
+    public required List<Dictionary<string, string>> Attributes { get; init; }
+    
+    [JsonPropertyName("description")]
     public required string Description { get; init; }
 }
