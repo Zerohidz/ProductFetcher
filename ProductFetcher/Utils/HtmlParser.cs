@@ -179,12 +179,6 @@ public static partial class HtmlParser
     /// </summary>
     public static class ProductDetailsParser
     {
-        public class ProductDetailsJson
-        {
-            [System.Text.Json.Serialization.JsonPropertyName("product")]
-            public ProductJson? Product { get; set; }
-        }
-
         public class ProductJson
         {
             [System.Text.Json.Serialization.JsonPropertyName("attributes")]

@@ -26,9 +26,14 @@ public class ProductDetailsService
 
         // Extract JSON from HTML
         var productJsonText = HtmlParser.ExtractProductJsonFromHtml(html, url);
-        var productDetailsJson = JsonSerializer.Deserialize<HtmlParser.ProductDetailsParser.ProductDetailsJson>(productJsonText);
+        // The extracted JSON is the product object itself, not wrapped in a "product" key
+        var product = JsonSerializer.Deserialize<HtmlParser.ProductDetailsParser.ProductJson>(productJsonText);
 
-        var product = productDetailsJson?.Product ?? throw new InvalidOperationException("Product data not found in JSON");
+        if (product == null)
+        {
+             throw new InvalidOperationException("Product data not found in JSON");
+        }
+
         var attributeList = product.Attributes ?? [];
         var descriptionList = product.Descriptions ?? [];
 
